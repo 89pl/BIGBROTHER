@@ -1,0 +1,136 @@
+import React, { useState } from 'react';
+
+export default function Home() {
+  const [isWatching, setIsWatching] = useState(false);
+  const [paranoiaLevel, setParanoiaLevel] = useState(0);
+  const [message, setMessage] = useState("Your data is safe... probably");
+
+  const handleMouseMove = () => {
+    if (Math.random() > 0.7) {
+      setIsWatching(true);
+      setParanoiaLevel(prev => Math.min(prev + 1, 10));
+      setMessage("They're watching... I can feel it");
+
+      setTimeout(() => {
+        setIsWatching(false);
+        setMessage("Just kidding... or am I?");
+      }, 2000);
+    }
+  };
+
+  const handleCopy = (e) => {
+    e.preventDefault();
+    setMessage("Copied to clipboard... and to 10 government servers");
+    setParanoiaLevel(prev => Math.min(prev + 2, 10));
+  };
+
+  return (
+    <div 
+      className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 text-white overflow-hidden"
+      onMouseMove={handleMouseMove}
+      onCopy={handleCopy}
+    >
+      {/* Surveillance Grid Background */}
+      <div className="fixed inset-0 opacity-10 pointer-events-none">
+        <div className="grid grid-cols-12 grid-rows-8 h-full w-full">
+          {Array.from({ length: 96 }).map((_, i) => (
+            <div key={i} className="border border-gray-600"></div>
+          ))}
+        </div>
+      </div>
+
+      {/* Floating Surveillance Cameras */}
+      <div className="fixed top-10 left-10 text-red-500 text-sm animate-pulse">🔴 LIVE</div>
+      <div className="fixed top-10 right-10 text-red-500 text-sm animate-pulse">🔴 LIVE</div>
+      <div className="fixed bottom-10 left-10 text-red-500 text-sm animate-pulse">🔴 LIVE</div>
+      <div className="fixed bottom-10 right-10 text-red-500 text-sm animate-pulse">🔴 LIVE</div>
+
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+        {/* Replaced the big circle with a stylized surveillance symbol */}
+        <div className={`mb-8 transition-transform duration-300 ${isWatching ? 'scale-105' : 'scale-100'}`}>
+          <div className="relative">
+            {/* Eye symbol */}
+            <div className="w-32 h-16 bg-red-600 rounded-full mx-auto relative overflow-hidden border-4 border-red-800 shadow-lg shadow-red-500/50">
+              <div className="absolute top-1/2 left-1/2 w-8 h-8 bg-white rounded-full transform -translate-x-1/2 -translate-y-1/2">
+                <div className="w-4 h-4 bg-black rounded-full mx-auto mt-2"></div>
+              </div>
+            </div>
+            {/* Glitch effect */}
+            <div className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 opacity-70 rounded animate-ping"></div>
+          </div>
+        </div>
+
+        {/* Main Title */}
+        <h1 className="text-6xl md:text-8xl font-black text-center mb-4 bg-gradient-to-r from-red-500 via-red-600 to-red-800 bg-clip-text text-transparent">
+          BIGBROTHER
+        </h1>
+
+        <p className="text-2xl md:text-3xl text-center mb-8 text-gray-300 font-medium animate-fade-in">
+          The coin that watches you back
+        </p>
+
+        {/* Status Message */}
+        <div className={`text-xl text-center mb-12 text-red-400 font-bold transition-all duration-300 ${isWatching ? 'scale-105 rotate-2' : ''}`}>
+          {message}
+        </div>
+
+        {/* Paranoia Meter */}
+        <div className="w-64 h-8 bg-gray-700 rounded-full mb-8 overflow-hidden">
+          <div 
+            style={{ width: `${(paranoiaLevel / 10) * 100}%` }}
+            className="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-600 transition-all duration-500"
+          ></div>
+        </div>
+        <p className="text-sm text-gray-400 mb-8">
+          Your current paranoia level: {paranoiaLevel}/10
+        </p>
+
+        {/* Features */}
+        <div className="grid md:grid-cols-3 gap-8 mb-12 max-w-4xl">
+          <div className="text-center p-6 bg-gray-800 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors duration-300">
+            <div className="text-4xl mb-4">👁️</div>
+            <h3 className="text-xl font-bold mb-2 text-red-400">Always Watching</h3>
+            <p className="text-gray-300">Your transactions, your memes, your midnight snack choices</p>
+          </div>
+
+          <div className="text-center p-6 bg-gray-800 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors duration-300">
+            <div className="text-4xl mb-4">🔒</div>
+            <h3 className="text-xl font-bold mb-2 text-red-400">Privacy First</h3>
+            <p className="text-gray-300">We collect all your data to better protect your privacy</p>
+          </div>
+
+          <div className="text-center p-6 bg-gray-800 rounded-lg border border-gray-700 hover:bg-gray-700 transition-colors duration-300">
+            <div className="text-4xl mb-4">🇬🇧</div>
+            <h3 className="text-xl font-bold mb-2 text-red-400">Patriotic</h3>
+            <p className="text-gray-300">Supporting UK surveillance since 2023</p>
+          </div>
+        </div>
+
+        {/* Fake Data Collection Notice */}
+        <div className="text-center max-w-2xl mb-8">
+          <p className="text-sm text-gray-500 italic">
+            By viewing this website, you consent to the collection of your IP address, browsing habits, 
+            device information, location data, search history, and subconscious thoughts. 
+            This data may be shared with government agencies, advertisers, and your mother.
+          </p>
+        </div>
+
+        {/* Easter Egg */}
+        {paranoiaLevel >= 5 && (
+          <div className="text-center p-4 bg-red-900/50 border border-red-700 rounded-lg max-w-md animate-fade-in">
+            <p className="text-sm">
+              🔍 <strong>ALERT:</strong> Unusual activity detected. 
+              Please remain calm. Your device has been remotely accessed for your protection.
+            </p>
+          </div>
+        )}
+
+        {/* Footer */}
+        <footer className="mt-12 text-center text-gray-500 text-sm">
+          <p>BIGBROTHER © 2023 | All your coins belong to us</p>
+          <p className="mt-1">This website is watching you. Always.</p>
+        </footer>
+      </div>
+    </div>
+  );
+}
